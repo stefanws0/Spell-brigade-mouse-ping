@@ -1,5 +1,7 @@
 # Spell Brigade Mouse Ping
 
+On Thunderstore: [Mouse Ping by StrayingFox](https://thunderstore.io/c/the-spell-brigade/p/StrayingFox/Mouse_Ping/).
+
 A BepInEx 6 (IL2CPP) mod for The Spell Brigade: quick pings (middle mouse button or V) land where your **mouse
 cursor** points instead of around your wizard. If something pingable (potion, magnet, objective, revive zone...) is
 within 2.5 units of the cursor, that is pinged; otherwise the spot under the cursor. With a gamepad, or when the game
