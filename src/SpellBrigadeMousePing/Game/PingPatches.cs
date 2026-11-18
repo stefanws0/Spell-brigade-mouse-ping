@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
-using Il2CppInterop.Common.XrefScans;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -36,8 +35,6 @@ internal static class PingPatches
             ModLog.Error("SmartPingManager.SmartPing or PingLocationRpc not found: mouse pings are off.");
             return;
         }
-
-        DescribeCalls(smartPing, "SmartPing");
 
         // Inspect both before judging either: shared native code only shows once both are known.
         NativeCode.Inspect(smartPing, "SmartPingManager.SmartPing");
@@ -206,27 +203,8 @@ internal static class PingPatches
         }
     }
 
-    /// <summary>One-time discovery: which methods the game's method calls (confirms PingLocationRpc/PingRpc are its exits).</summary>
-    private static void DescribeCalls(MethodBase method, string label)
-    {
-        try
-        {
-            ModLog.Step($"xref scan of {label}");
-            var names = new List<string>();
-            foreach (var x in XrefScanner.XrefScan(method))
-            {
-                if (x.Type != XrefType.Method) continue;
-                var callee = XrefScanMethodDb.TryResolvePointer(x.Pointer);
-                names.Add(callee == null ? $"0x{(long)x.Pointer:X}" : $"{callee.DeclaringType?.Name}.{callee.Name}");
-            }
-
-            ModLog.Info($"{label} calls: {string.Join(", ", names)}");
-        }
-        catch (Exception ex)
-        {
-            ModLog.Warn($"Could not list what {label} calls: {ex.GetType().Name}: {ex.Message}");
-        }
-    }
+    // No Il2CppInterop XrefScanner here: 0.1.0 ran XrefScanner.XrefScan(SmartPing) in Plugin.Load and it killed the
+    // game at startup (AccessViolationException in XrefGlobalClassFilter, uncatchable in .NET 6).
 
     private static void LogPing(string what)
     {
