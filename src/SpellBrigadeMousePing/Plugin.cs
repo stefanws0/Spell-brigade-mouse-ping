@@ -23,6 +23,8 @@ public class Plugin : BasePlugin
         Harmony = new Harmony(Guid);
         ModLog.Step("Load: registering PingRunner");
         AddComponent<PingRunner>();
+        if (ModConfig.Enabled.Value) PingPatches.Install();
+        else ModLog.Info("General.Enabled is off: no patches, pings stay as the game makes them.");
         ModLog.Step("Load: done");
         ModLog.Info($"{Name} {Version} loaded.");
     }
