@@ -2,4 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/SpellBrigadeMousePing/SpellBrigadeMousePing.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SpellBrigadeMousePing.Tests/SpellBrigadeMousePing.Tests.csproj" />
+  </Folder>
 </Solution>
