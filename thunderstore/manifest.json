@@ -1,5 +1,5 @@
 {
-  "name": "SpellBrigadeMousePing",
+  "name": "Mouse_Ping",
   "version_number": "0.2.1",
   "website_url": "https://github.com/stefanws0/Spell-brigade-mouse-ping",
   "description": "Quick pings (middle mouse / V) land where your mouse cursor points instead of on your wizard, and snap to potions, magnets and objectives near the cursor. Gamepad pings are unchanged.",

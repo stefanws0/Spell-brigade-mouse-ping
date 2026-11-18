@@ -47,7 +47,7 @@
     <Message Importance="high" Text="Deployed to $(BepInExDir)\plugins\SpellBrigadeMousePing" />
   </Target>
 
-  <!-- dotnet build src/SpellBrigadeMousePing -c Release -t:Package  → dist/SpellBrigadeMousePing-<version>.zip for r2modman/Thunderstore -->
+  <!-- dotnet build src/SpellBrigadeMousePing -c Release -t:Package  → dist/Mouse_Ping-<version>.zip for r2modman/Thunderstore (package name Mouse_Ping, shown as "Mouse Ping") -->
   <Target Name="Package" DependsOnTargets="Build">
     <PropertyGroup>
       <RepoRoot>$(MSBuildThisFileDirectory)..\..\</RepoRoot>
@@ -61,8 +61,8 @@
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(StageDir)" />
     <Copy SourceFiles="$(RepoRoot)thunderstore\manifest.json;$(RepoRoot)thunderstore\icon.png;$(RepoRoot)thunderstore\README.md;$(RepoRoot)CHANGELOG.md" DestinationFolder="$(StageDir)" />
     <MakeDir Directories="$(DistDir)" />
-    <ZipDirectory SourceDirectory="$(StageDir)" DestinationFile="$(DistDir)SpellBrigadeMousePing-$(Version).zip" Overwrite="true" />
-    <Message Importance="high" Text="Package: $(DistDir)SpellBrigadeMousePing-$(Version).zip" />
+    <ZipDirectory SourceDirectory="$(StageDir)" DestinationFile="$(DistDir)Mouse_Ping-$(Version).zip" Overwrite="true" />
+    <Message Importance="high" Text="Package: $(DistDir)Mouse_Ping-$(Version).zip" />
   </Target>
 
 </Project>

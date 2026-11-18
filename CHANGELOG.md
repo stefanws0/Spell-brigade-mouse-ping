@@ -4,6 +4,8 @@
 
 - New icon in the game's own badge style (white ring, black disc, rough hand-cut silhouette): a mouse pointer
   pinging the ground. No code changes.
+- Thunderstore name: from 0.2.1 on the package is `StrayingFox-Mouse_Ping`, shown as **"Mouse Ping"** (Thunderstore names
+  allow no spaces; underscores display as spaces). The first listing, `StrayingFox-SpellBrigadeMousePing`, is deprecated.
 
 ## 0.2.0 (2026-11-18)
 

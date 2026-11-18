@@ -1,4 +1,4 @@
-# Spell Brigade Mouse Ping
+# Mouse Ping
 
 Point at something with your mouse and ping it: your quick ping (**middle mouse button** or **V**) lands where your
 **cursor** is, not on your wizard.
