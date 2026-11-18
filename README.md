@@ -38,4 +38,5 @@ Release zip for r2modman / Thunderstore (`dist/SpellBrigadeMousePing-<version>.z
 dotnet build src/SpellBrigadeMousePing -c Release -t:Package
 ```
 
-The icon is drawn by `python -I tools/make_icon.py thunderstore/icon.png`.
+The icon art is `art/icon_source.png` (generated in the style of the game's ability icons);
+`python -I tools/make_icon.py art/icon_source.png thunderstore/icon.png` crops it to the 256px transparent badge.

@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>SpellBrigadeMousePing</AssemblyName>
     <RootNamespace>SpellBrigadeMousePing</RootNamespace>
-    <Version>0.2.0</Version>
+    <Version>0.2.1</Version>
     <!-- C# 10: newer versions emit extra compiler attributes that could clash with interop copies. -->
     <LangVersion>10</LangVersion>
     <!-- See CompilerAttributes.cs: the game's interop exposes a broken NullableAttribute. -->

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1 (2026-11-18)
+
+- New icon in the game's own badge style (white ring, black disc, rough hand-cut silhouette): a mouse pointer
+  pinging the ground. No code changes.
+
 ## 0.2.0 (2026-11-18)
 
 - First release package (r2modman / Thunderstore zip: `dotnet build src/SpellBrigadeMousePing -c Release -t:Package`).

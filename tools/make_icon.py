@@ -1,73 +1,54 @@
-"""Draw the Thunderstore icon (256x256 PNG): ping ripples on the ground with a mouse cursor pointing at their centre.
+"""Turn the badge art (art/icon_source.png) into the Thunderstore icon: 256x256 PNG, transparent outside the badge.
 
-Usage: python -I tools/make_icon.py thunderstore/icon.png
+Usage: python -I tools/make_icon.py art/icon_source.png thunderstore/icon.png
+
+The source is a round badge in the game's icon style (white ring, black disc, rough white silhouette) on an opaque
+background. The script finds the white ring's outer edge along the middle row and column, keeps everything inside
+that circle (anti-aliased edge) and makes the rest transparent.
 """
+import math
 import sys
 
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image
 
-S = 1024  # drawn at 4x, scaled down to 256 for smooth edges
-OUT = 256
-
-BG_TOP = (34, 26, 78)
-BG_BOTTOM = (12, 10, 32)
-GOLD = (255, 200, 72)
-CURSOR_FILL = (255, 255, 255)
-CURSOR_EDGE = (16, 14, 40)
-
-# ripple centre = where the cursor points
-CX, CY = 430, 470
+SIZE = 256
+BRIGHT = 200  # a pixel this bright (average of R, G, B) belongs to the white ring
 
 
-def background():
-    img = Image.new("RGBA", (S, S))
-    d = ImageDraw.Draw(img)
-    for y in range(S):
-        t = y / (S - 1)
-        d.line([(0, y), (S, y)], fill=tuple(round(a + (b - a) * t) for a, b in zip(BG_TOP, BG_BOTTOM)) + (255,))
-    return img
+def outer_edge(values):
+    """Index of the first and last bright value: the ring's outer edge along one line."""
+    bright = [i for i, v in enumerate(values) if v >= BRIGHT]
+    if not bright:
+        raise SystemExit("no white ring found along the middle of the image")
+    return bright[0], bright[-1]
 
 
-def glow():
-    layer = Image.new("RGBA", (S, S), (0, 0, 0, 0))
-    d = ImageDraw.Draw(layer)
-    d.ellipse([CX - 170, CY - 110, CX + 170, CY + 110], fill=GOLD + (120,))
-    return layer.filter(ImageFilter.GaussianBlur(70))
+def main(src, dst):
+    img = Image.open(src).convert("RGB")
+    w, h = img.size
+    gray = img.convert("L")
+    px = gray.load()
+    left, right = outer_edge([px[x, h // 2] for x in range(w)])
+    top, bottom = outer_edge([px[w // 2, y] for y in range(h)])
+    cx, cy = (left + right + 1) / 2, (top + bottom + 1) / 2
+    r = (right - left + bottom - top + 2) / 4
+    print(f"{src} {img.size}: ring centre ({cx:.0f}, {cy:.0f}), radius {r:.0f}")
 
-
-def ripples():
-    layer = Image.new("RGBA", (S, S), (0, 0, 0, 0))
-    d = ImageDraw.Draw(layer)
-    # flattened ellipses: rings lying on the ground, seen from the game's tilted top-down camera
-    for rx, alpha, width in ((120, 255, 34), (250, 190, 28), (380, 110, 22)):
-        ry = rx * 0.55
-        d.ellipse([CX - rx, CY - ry, CX + rx, CY + ry], outline=GOLD + (alpha,), width=width)
-    d.ellipse([CX - 34, CY - 20, CX + 34, CY + 20], fill=GOLD + (255,))
-    return layer
-
-
-def cursor():
-    # classic arrow, tip at (0, 0), in 'cursor units'
-    shape = [(0, 0), (0, 17), (4, 13.2), (7, 20), (9.6, 19), (6.6, 12.3), (12, 12.3)]
-    scale = 24
-    pts = [(CX + x * scale, CY + y * scale) for x, y in shape]
-    layer = Image.new("RGBA", (S, S), (0, 0, 0, 0))
-    shadow = Image.new("RGBA", (S, S), (0, 0, 0, 0))
-    ImageDraw.Draw(shadow).polygon([(x + 18, y + 22) for x, y in pts], fill=(0, 0, 0, 150))
-    layer.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(14)))
-    d = ImageDraw.Draw(layer)
-    d.polygon(pts, fill=CURSOR_FILL + (255,))
-    d.line(pts + [pts[0]], fill=CURSOR_EDGE + (255,), width=26, joint="curve")
-    return layer
-
-
-def main(path):
-    img = background()
-    for layer in (glow(), ripples(), cursor()):
-        img.alpha_composite(layer)
-    img.convert("RGB").resize((OUT, OUT), Image.LANCZOS).save(path)
-    print(f"wrote {path} ({OUT}x{OUT})")
+    alpha = Image.new("L", (w, h), 0)
+    a = alpha.load()
+    for y in range(h):
+        for x in range(w):
+            d = math.hypot(x + 0.5 - cx, y + 0.5 - cy)
+            a[x, y] = int(max(0.0, min(1.0, r - d + 0.5)) * 255)
+    badge = img.convert("RGBA")
+    badge.putalpha(alpha)
+    half = r + 2
+    badge = badge.crop((round(cx - half), round(cy - half), round(cx + half), round(cy + half)))
+    badge.resize((SIZE, SIZE), Image.LANCZOS).save(dst)
+    print(f"wrote {dst} ({SIZE}x{SIZE})")
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "thunderstore/icon.png")
+    if len(sys.argv) != 3:
+        raise SystemExit(__doc__)
+    main(sys.argv[1], sys.argv[2])
