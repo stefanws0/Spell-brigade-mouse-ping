@@ -4,6 +4,9 @@
 
 - First release package (r2modman / Thunderstore zip: `dotnet build src/SpellBrigadeMousePing -c Release -t:Package`).
 - `Debug.LogPings` is now off by default (an existing config keeps its saved value).
+- Depends on `BepInEx-BepInExPack_IL2CPP-6.0.788`, the BepInEx build the game runs (the commit message saying 6.0.755
+  "isn't listed" was wrong: it exists, 6.0.788 is just the matching one).
+- Published on Thunderstore as `StrayingFox-SpellBrigadeMousePing` (The Spell Brigade, category Mods), 18 Nov.
 
 ## 0.1.1 (2026-11-18, verified in game)
 
