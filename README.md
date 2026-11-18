@@ -15,7 +15,7 @@ confirmed in co-op).
 | `General.Enabled` | true | Cursor pings on/off (read at every ping; off at game start = no patches at all) |
 | `General.SnapToObjects` | true | Snap to the nearest pingable thing near the cursor |
 | `General.SnapRadius` | 2.5 | How close (game units) something must be to snap to it |
-| `Debug.LogPings` | true | One line per ping in `BepInEx/SpellBrigadeMousePing.log` |
+| `Debug.LogPings` | false | One line per ping in `BepInEx/SpellBrigadeMousePing.log` |
 
 ## Build
 
@@ -30,3 +30,12 @@ dotnet build src/SpellBrigadeMousePing -c Release -p:DeployToGame=true
 ```
 
 Deploy only while the game is closed (the DLL is locked while it runs).
+
+Release zip for r2modman / Thunderstore (`dist/SpellBrigadeMousePing-<version>.zip`; bump `<Version>` in the csproj,
+`Plugin.Version` and `thunderstore/manifest.json` together, the build refuses a mismatched manifest):
+
+```bash
+dotnet build src/SpellBrigadeMousePing -c Release -t:Package
+```
+
+The icon is drawn by `python -I tools/make_icon.py thunderstore/icon.png`.

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0 (2026-11-18)
+
+- First release package (r2modman / Thunderstore zip: `dotnet build src/SpellBrigadeMousePing -c Release -t:Package`).
+- `Debug.LogPings` is now off by default (an existing config keeps its saved value).
+
 ## 0.1.1 (2026-11-18, verified in game)
 
 - Verified by Stefan (solo, 16:37-16:44): pings at the cursor, snaps to a HealthPickUp and a HerdingTarget, the game's

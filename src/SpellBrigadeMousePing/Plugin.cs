@@ -11,7 +11,7 @@ public class Plugin : BasePlugin
 {
     public const string Guid = "com.stefanws0.spellbrigademouseping";
     public const string Name = "SpellBrigadeMousePing";
-    public const string Version = "0.1.1";
+    public const string Version = "0.2.0";
 
     internal static Harmony Harmony { get; private set; } = null!;
 

@@ -20,7 +20,7 @@ internal static class ModConfig
         SnapRadius = cfg.Bind("General", "SnapRadius", 2.5f, new ConfigDescription(
             "How close to the cursor (game units) something must be to snap the ping to it.",
             new AcceptableValueRange<float>(0.1f, 10f)));
-        LogPings = cfg.Bind("Debug", "LogPings", true,
+        LogPings = cfg.Bind("Debug", "LogPings", false,
             "Write one line per ping (cursor state, chosen target, what was near the cursor) to BepInEx/SpellBrigadeMousePing.log.");
     }
 }

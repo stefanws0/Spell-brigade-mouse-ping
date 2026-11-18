@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>SpellBrigadeMousePing</AssemblyName>
     <RootNamespace>SpellBrigadeMousePing</RootNamespace>
-    <Version>0.1.1</Version>
+    <Version>0.2.0</Version>
     <!-- C# 10: newer versions emit extra compiler attributes that could clash with interop copies. -->
     <LangVersion>10</LangVersion>
     <!-- See CompilerAttributes.cs: the game's interop exposes a broken NullableAttribute. -->
@@ -45,6 +45,24 @@
   <Target Name="DeployToGame" AfterTargets="Build" Condition="'$(DeployToGame)' == 'true'">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(BepInExDir)\plugins\SpellBrigadeMousePing" />
     <Message Importance="high" Text="Deployed to $(BepInExDir)\plugins\SpellBrigadeMousePing" />
+  </Target>
+
+  <!-- dotnet build src/SpellBrigadeMousePing -c Release -t:Package  → dist/SpellBrigadeMousePing-<version>.zip for r2modman/Thunderstore -->
+  <Target Name="Package" DependsOnTargets="Build">
+    <PropertyGroup>
+      <RepoRoot>$(MSBuildThisFileDirectory)..\..\</RepoRoot>
+      <StageDir>$(BaseIntermediateOutputPath)package\</StageDir>
+      <DistDir>$(RepoRoot)dist\</DistDir>
+      <_Manifest>$([System.IO.File]::ReadAllText('$(RepoRoot)thunderstore\manifest.json'))</_Manifest>
+    </PropertyGroup>
+    <Error Condition="'$(_Manifest.Contains(&quot;&quot;version_number&quot;: &quot;$(Version)&quot;&quot;))' != 'True'"
+           Text="thunderstore/manifest.json's version_number doesn't match the project Version $(Version)." />
+    <RemoveDir Directories="$(StageDir)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(StageDir)" />
+    <Copy SourceFiles="$(RepoRoot)thunderstore\manifest.json;$(RepoRoot)thunderstore\icon.png;$(RepoRoot)thunderstore\README.md;$(RepoRoot)CHANGELOG.md" DestinationFolder="$(StageDir)" />
+    <MakeDir Directories="$(DistDir)" />
+    <ZipDirectory SourceDirectory="$(StageDir)" DestinationFile="$(DistDir)SpellBrigadeMousePing-$(Version).zip" Overwrite="true" />
+    <Message Importance="high" Text="Package: $(DistDir)SpellBrigadeMousePing-$(Version).zip" />
   </Target>
 
 </Project>
