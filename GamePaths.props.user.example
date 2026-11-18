@@ -1,0 +1,14 @@
+<!--
+  Copy this file to GamePaths.props.user (same folder; that file is git-ignored) and point it at your install.
+  BepInExDir must contain core/ and interop/. interop/ only appears after starting the game once with BepInEx.
+-->
+<Project>
+  <PropertyGroup>
+    <!-- Plain Steam install with BepInEx copied into the game folder: -->
+    <GameDir>C:\Program Files (x86)\Steam\steamapps\common\The Spell Brigade</GameDir>
+
+    <!-- Or, if you use r2modman / Gale, point straight at the profile's BepInEx folder instead, e.g.: -->
+    <!-- <BepInExDir>$(AppData)\r2modmanPlus-local\TheSpellBrigade\profiles\Default\BepInEx</BepInExDir> -->
+    <!-- <BepInExDir>$(AppData)\com.kesomannen.gale\the-spell-brigade\profiles\Default\BepInEx</BepInExDir> -->
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,8 @@
+root = true
+
+[*.cs]
+indent_style = space
+indent_size = 4
+# Keep `using` directives INSIDE the namespace. The game declares classes in the global namespace
+# (e.g. `PlayerInfo`), and those would shadow anything imported by file-level usings.
+csharp_using_directive_placement = inside_namespace:warning

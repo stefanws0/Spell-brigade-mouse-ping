@@ -1,0 +1,8 @@
+bin/
+obj/
+dist/
+*.user
+!GamePaths.props.user.example
+.vs/
+.idea/
+interop/
